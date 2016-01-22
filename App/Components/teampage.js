@@ -16,6 +16,7 @@ import React, {
 var {moment} = require('moment');
 var {Icon, TabBarIOS, Spinner } = require('react-native-icons');
 
+var LoadingTextField = require('./loadingtextfield');
 
 
 var TeamPage = React.createClass({
@@ -28,23 +29,18 @@ var TeamPage = React.createClass({
     };
   },
 
-  renderSpinner()
-  {
-    if(this.state.searching === true){
-      return (
-                <Spinner style={styles.spinIcon} size={15} name='fontawesome|spinner' color='#FFFFFF' height={30} width={30}/>
-
-        )
-    }else{
-      return (<View/>)
-    }
-  },
-
   runNetworkSearch()
   {
     var searchText = this.state.currentText;
   },
 
+  componentDidMount()
+  {
+    console.log("Have content food");
+    // console.log(this.refs);
+    console.log(this.refs["teamName"]);
+      // this.refs.teamName.focus();
+  },
 
   didFinishEditingText(){
     console.log(this.state.currentText);
@@ -59,28 +55,37 @@ var TeamPage = React.createClass({
 
   render()
   {
+    // var textField = this.loadingTextField();
+    // 
     return (
-      <View style={styles.container}>
-      <Text style={styles.teamTitle}>Sign in to your team</Text>
-      <View style={styles.textViewHolder}>
-      <View style={styles.textFlexHolder}>
-        <TextInput  onChangeText={(val) => {this.setCurrentText(val)}}onBlur={() => this.didFinishEditingText()} autoCapitalize='none' style={styles.teamTextInput} placeholder='your team name' placeholderTextColor={'rgba(249,249,249,0.3)'} autoCorrect={false} autoFocus={false} />
-        {this.renderSpinner()}
-        </View>
-        <View style={styles.textInputBottomLine}/>
-        </View>
+      <View style={currentStyles.container}>
+      <Text style={currentStyles.teamTitle}>Sign in to your team</Text>
+      <LoadingTextField styles={currentStyles.textField} currentText="" updateText={(text) => this.setCurrentText(text)} finishedEditing={() => this.didFinishEditingText} placeholder='your team name' />
+            <LoadingTextField styles={currentStyles.textField} currentText="" updateText={(text) => this.setCurrentText(text)} finishedEditing={() => this.didFinishEditingText} placeholder='teambo' />
+
       </View>
+
       )
+    // return 
+    // (
+    //   <View style={currentStyles.container}/>
+    //   )
+      // <View style={currentStyles.container}>
+      // <Text style={currentStyles.teamTitle}>Sign in to your team</Text>
+      // </View>
+      
+    
   }
 
 });
 
-
-var styles = StyleSheet.create({
+var currentStyles = StyleSheet.create({
   container: {
     backgroundColor: '#31363E',
     flex: 1,
   },
+
+  
   teamTitle: {
     textAlign: 'center',
     fontSize: 16,
@@ -119,7 +124,7 @@ var styles = StyleSheet.create({
     marginTop:5,
     backgroundColor: 'white',
     alignSelf: 'stretch',
-  },
+  }
 
 });
 
