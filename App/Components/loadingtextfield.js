@@ -27,8 +27,21 @@ var LoadingTextField = React.createClass({
     };
   },
 
+  getDefaultProps()
+  {
+    return {
+      secureTextEntry: false
+    };
+  },
+
   componentDidMount(){
     console.log("text field did mount");
+  },
+
+  editingFinished()
+  {
+    this.props.onBlur();
+    console.log("editing finished");
   },
 
    renderSpinner()
@@ -46,7 +59,7 @@ var LoadingTextField = React.createClass({
     return (
       <View style={styles.textViewHolder}>
         <View style={styles.textFlexHolder}>
-        <TextInput ref="teamName" value={this.props.currentText}  onChangeText={(val) => {this.props.updateText(val)}}onBlur={() => this.props.finishedEditing()} autoCapitalize='none' style={styles.teamTextInput} placeholder={this.props.placeholder} placeholderTextColor={'rgba(249,249,249,0.3)'} autoCorrect={false} autoFocus={false} />
+        <TextInput secureTextEntry={this.props.secureTextEntry} ref="teamName" value={this.props.currentText}  onChangeText={(val) => {this.props.updateText(val)}} onSubmitEditing={this.props.onBlur} onBlur={this.props.onBlur} autoCapitalize='none' style={styles.teamTextInput} placeholder={this.props.placeholder} placeholderTextColor={'rgba(249,249,249,0.3)'} autoCorrect={false} autoFocus={false} />
         {this.renderSpinner()}
         </View>
         <View style={styles.textInputBottomLine}/>

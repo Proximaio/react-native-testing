@@ -16,16 +16,16 @@ import React, {
 var {moment} = require('moment');
 var {Icon, TabBarIOS, Spinner } = require('react-native-icons');
 
-var LoginPage = require('./loginpage');
 var LoadingTextField = require('./loadingtextfield');
 
 
-var TeamPage = React.createClass({
+var LoginPage = React.createClass({
 
 
   getInitialState(){
     return {
-      currentText: '',
+      email: '',
+      password: '',
       searching: true,
     };
   },
@@ -33,12 +33,6 @@ var TeamPage = React.createClass({
   runNetworkSearch()
   {
     var searchText = this.state.currentText;
-    this.props.navigator.push({
-      title: "Login",
-      component: LoginPage,
-      passProps: {teamName: searchText},
-      backButtonTitle: "back",
-    });
   },
 
   componentDidMount()
@@ -50,7 +44,6 @@ var TeamPage = React.createClass({
   },
 
   didFinishEditingText(){
-    console.log("FINISH MY EDITING QUEEN");
     console.log(this.state.currentText);
     this.runNetworkSearch();
   },
@@ -67,9 +60,9 @@ var TeamPage = React.createClass({
     // 
     return (
       <View style={currentStyles.container}>
-      <Text style={currentStyles.teamTitle}>Sign in to your team</Text>
-      <LoadingTextField styles={currentStyles.textField} currentText={this.state.currentText} updateText={(text) => this.setCurrentText(text)} onBlur={() => this.didFinishEditingText()} placeholder='your team name' />
-
+      <Text style={currentStyles.teamTitle}>{this.props.teamName}</Text>
+      <LoadingTextField styles={currentStyles.textField} currentText={this.state.email} updateText={(text) => this.setState({email: text})} finishedEditing={() => this.didFinishEditingText} placeholder='email address' />
+      <LoadingTextField styles={currentStyles.textField} currentText={this.state.password} updateText={(text) => this.setState({password: text})} finishedEditing={() => this.didFinishEditingText} placeholder='password' secureTextEntry={true} />
       </View>
 
       )
@@ -135,4 +128,4 @@ var currentStyles = StyleSheet.create({
 
 });
 
-module.exports = TeamPage;
+module.exports = LoginPage;
